@@ -1,35 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
+import CreditDebitDisplay from "./components/CreditDebitDisplay";
+import DateRangeSelector from "./components/DateRangeSelector";
+import FileUploader from "./components/FileUploader";
+import ThemeSwitcher from "./components/ThemeSwitcher";
 
 function App() {
-  const [count, setCount] = useState(0)
+  // File upload handler
+  const handleFilesSelected = (files: FileList) => {
+    alert(`${files.length} file(s) selected!`);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="min-h-screen flex flex-col items-center justify-center gap-8 bg-gradient-to-br from-slate-100 to-slate-300 dark:from-zinc-900 dark:to-zinc-800">
+      <div className="w-full flex justify-end p-2">
+        <ThemeSwitcher />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+      <h1 className="text-4xl font-bold mb-2">MBB Dashboard</h1>
+      <div className="flex flex-col md:flex-row gap-8 w-full max-w-3xl items-stretch">
+        <div className="flex-1 bg-white dark:bg-zinc-900 rounded-xl shadow p-6 flex flex-col gap-6">
+          <h2 className="text-2xl font-semibold mb-2">Upload Bank Statement</h2>
+          <FileUploader onFilesSelected={handleFilesSelected} />
+          <DateRangeSelector />
+        </div>
+        <div className="flex-1 bg-white dark:bg-zinc-900 rounded-xl shadow p-6 flex flex-col gap-6 justify-center items-center">
+          <h2 className="text-2xl font-semibold mb-2">Summary</h2>
+          <CreditDebitDisplay transactions={[]} />
+        </div>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
