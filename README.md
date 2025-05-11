@@ -1,55 +1,54 @@
-# mbb-dashboard-client
+# React + TypeScript + Vite
 
-# Flow
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-1. User uploads a bank statement.
-2. The system processes the bank statement and extracts transactions.
-3. The system stores the transactions in the database.
-4. The user can view the transactions through the API.
-5. The user can filter transactions by date range, bank statement ID, and sort order.
-6. The user can download the bank statement in PDF format.
-7. The user can delete a bank statement, which also deletes the associated transactions.
-8. The user can view the details of a specific transaction.
+Currently, two official plugins are available:
 
-# API Endpoints
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Bank Statements
+## Expanding the ESLint configuration
 
-- **POST** `/api/bank-statements/upload`
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-- **GET** `/api/bank-statements`
+```js
+export default tseslint.config({
+  extends: [
+    // Remove ...tseslint.configs.recommended and replace with this
+    ...tseslint.configs.recommendedTypeChecked,
+    // Alternatively, use this for stricter rules
+    ...tseslint.configs.strictTypeChecked,
+    // Optionally, add this for stylistic rules
+    ...tseslint.configs.stylisticTypeChecked,
+  ],
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+})
+```
 
-  - Query Parameters:
-    - `q=search term`
-    - `date_from=YYYY-MM-DD`
-    - `date_to=YYYY-MM-DD`
-    - `limit=10`
-    - `offset=0`
-    - `sort=-createdAt` prefix - means DESC
-    - `sort=updatedAt` prefix - means DESC
-    - `sort=amount`
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-- **GET** `/api/bank-statements/:id`
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-  - Query Parameters:
-    - `download=true`
-
-- **DELETE** `/api/bank-statements/:id`
-
----
-
-## Transactions
-
-- **GET** `/api/transactions`
-
-  - Query Parameters:
-    - `q=search term`
-    - `bank_statement_id=123`
-    - `date_from=YYYY-MM-DD`
-    - `date_to=YYYY-MM-DD`
-    - `limit=10`
-    - `offset=0`
-    - `sort=createdAt`
-    - `sort=amount`
-
-- **GET** `/api/transactions/:id`
+export default tseslint.config({
+  plugins: {
+    // Add the react-x and react-dom plugins
+    'react-x': reactX,
+    'react-dom': reactDom,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended typescript rules
+    ...reactX.configs['recommended-typescript'].rules,
+    ...reactDom.configs.recommended.rules,
+  },
+})
+```
