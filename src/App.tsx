@@ -1,34 +1,40 @@
-import "./App.css";
-import CreditDebitDisplay from "./components/CreditDebitDisplay";
-import DateRangeSelector from "./components/DateRangeSelector";
-import FileUploader from "./components/FileUploader";
-import ThemeSwitcher from "./components/ThemeSwitcher";
+import './App.css'
+
+import config from '../config'
+import DateRangeSelector from './components/DateRangeSelector'
+import FileUploader from './components/FileUploader'
+import ThemeSwitcher from './components/ThemeSwitcher'
 
 function App() {
-  // File upload handler
-  const handleFilesSelected = (files: FileList) => {
-    alert(`${files.length} file(s) selected!`);
-  };
+  const handleFilesSelected = async (files: FileList) => {
+    if (!files.length) return
+    const formData = new FormData()
+    for (let i = 0; i < files.length; i++) {
+      formData.append('file', files[i])
+    }
+    try {
+      const res = await fetch(`${config.apiUrl}/api/bank-statements/upload`, {
+        method: 'POST',
+        body: formData
+      })
+      if (!res.ok) {
+        const err = await res.json()
+        alert(`Upload failed: ${err.error || res.statusText}`)
+        return
+      }
+      alert(`Upload successful! Uploaded ${files.length} file(s).`)
+    } catch (e) {
+      alert('Upload failed: ' + (e instanceof Error ? e.message : e))
+    }
+  }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center gap-8 bg-gradient-to-br from-slate-100 to-slate-300 dark:from-zinc-900 dark:to-zinc-800">
-      <div className="w-full flex justify-end p-2">
-        <ThemeSwitcher />
-      </div>
-      <h1 className="text-4xl font-bold mb-2">MBB Dashboard</h1>
-      <div className="flex flex-col md:flex-row gap-8 w-full max-w-3xl items-stretch">
-        <div className="flex-1 bg-white dark:bg-zinc-900 rounded-xl shadow p-6 flex flex-col gap-6">
-          <h2 className="text-2xl font-semibold mb-2">Upload Bank Statement</h2>
-          <FileUploader onFilesSelected={handleFilesSelected} />
-          <DateRangeSelector />
-        </div>
-        <div className="flex-1 bg-white dark:bg-zinc-900 rounded-xl shadow p-6 flex flex-col gap-6 justify-center items-center">
-          <h2 className="text-2xl font-semibold mb-2">Summary</h2>
-          <CreditDebitDisplay transactions={[]} />
-        </div>
-      </div>
-    </div>
-  );
+    <>
+      <ThemeSwitcher />
+      <FileUploader onFilesSelected={handleFilesSelected} />
+      <DateRangeSelector />
+    </>
+  )
 }
 
-export default App;
+export default App
