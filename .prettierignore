@@ -1,9 +1,4 @@
-build
-node_modules
-package.json
+# Lock files
 package-lock.json
+pnpm-lock.yaml
 yarn.lock
-*.yml
-*.yaml
-src/App/types/*
-*.json

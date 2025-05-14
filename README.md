@@ -1,55 +1,29 @@
-# mbb-dashboard-client
+# Rsbuild project
 
-# Flow
+## Setup
 
-1. User uploads a bank statement.
-2. The system processes the bank statement and extracts transactions.
-3. The system stores the transactions in the database.
-4. The user can view the transactions through the API.
-5. The user can filter transactions by date range, bank statement ID, and sort order.
-6. The user can download the bank statement in PDF format.
-7. The user can delete a bank statement, which also deletes the associated transactions.
-8. The user can view the details of a specific transaction.
+Install the dependencies:
 
-# API Endpoints
+```bash
+pnpm install
+```
 
-## Bank Statements
+## Get started
 
-- **POST** `/api/bank-statements/upload`
+Start the dev server:
 
-- **GET** `/api/bank-statements`
+```bash
+pnpm dev
+```
 
-  - Query Parameters:
-    - `q=search term`
-    - `date_from=YYYY-MM-DD`
-    - `date_to=YYYY-MM-DD`
-    - `limit=10`
-    - `offset=0`
-    - `sort=-createdAt` prefix - means DESC
-    - `sort=updatedAt` prefix - means DESC
-    - `sort=amount`
+Build the app for production:
 
-- **GET** `/api/bank-statements/:id`
+```bash
+pnpm build
+```
 
-  - Query Parameters:
-    - `download=true`
+Preview the production build locally:
 
-- **DELETE** `/api/bank-statements/:id`
-
----
-
-## Transactions
-
-- **GET** `/api/transactions`
-
-  - Query Parameters:
-    - `q=search term`
-    - `bank_statement_id=123`
-    - `date_from=YYYY-MM-DD`
-    - `date_to=YYYY-MM-DD`
-    - `limit=10`
-    - `offset=0`
-    - `sort=createdAt`
-    - `sort=amount`
-
-- **GET** `/api/transactions/:id`
+```bash
+pnpm preview
+```
