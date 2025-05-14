@@ -30,9 +30,10 @@ function App() {
 
   return (
     <>
-      <ThemeSwitcher />
+      {/* <ThemeSwitcher />
       <FileUploader onFilesSelected={handleFilesSelected} />
-      <DateRangeSelector />
+      <DateRangeSelector /> */}
+      <h1> HEllo</h1>
     </>
   )
 }

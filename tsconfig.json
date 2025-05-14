@@ -24,11 +24,12 @@
   },
   "include": [
     // which files to compile
-    "src"
+    "src",
+    "vite.config.ts"
   ],
   "exclude": [
     // which files to ignore
     "node_modules",
     "src/App/types/*",
-  ]
+  ],
 }
