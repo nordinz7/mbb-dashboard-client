@@ -9,26 +9,36 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
+import { Transaction } from '../types';
 
-// Example data, replace with real data from API
-const data = [
-  { date: '2025-05-01', count: 5 },
-  { date: '2025-05-02', count: 8 },
-  { date: '2025-05-03', count: 3 },
-  { date: '2025-05-04', count: 7 },
-];
+interface TransactionCountChartProps {
+  transactions: Transaction[];
+}
 
-const TransactionCountChart: React.FC = () => (
-  <ResponsiveContainer width="100%" height={300}>
-    <BarChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="date" />
-      <YAxis />
-      <Tooltip />
-      <Legend />
-      <Bar dataKey="count" fill="#8884d8" name="Transaction Count" />
-    </BarChart>
-  </ResponsiveContainer>
-);
+const TransactionCountChart: React.FC<TransactionCountChartProps> = ({
+  transactions,
+}) => {
+  // Count transactions per date
+  const grouped: Record<string, number> = {};
+  transactions.forEach((tx) => {
+    grouped[tx.date] = (grouped[tx.date] || 0) + 1;
+  });
+  const data = Object.entries(grouped)
+    .map(([date, count]) => ({ date, count }))
+    .sort((a, b) => a.date.localeCompare(b.date));
+
+  return (
+    <ResponsiveContainer width="100%" height={300}>
+      <BarChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="date" />
+        <YAxis />
+        <Tooltip />
+        {/* <Legend /> */}
+        <Bar dataKey="count" fill="#8884d8" name="Transaction Count" />
+      </BarChart>
+    </ResponsiveContainer>
+  );
+};
 
 export default TransactionCountChart;
