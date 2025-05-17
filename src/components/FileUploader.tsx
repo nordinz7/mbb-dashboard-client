@@ -1,4 +1,5 @@
 import React from 'react';
+import config from '../config';
 
 interface FileUploaderProps {
   onFilesSelected?: (files: FileList) => void;
@@ -15,10 +16,13 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFilesSelected }) => {
         formData.append('file', file); // Flask expects 'file' for each file
       });
       try {
-        const response = await fetch('/api/bank-statements/upload', {
-          method: 'POST',
-          body: formData,
-        });
+        const response = await fetch(
+          `${config.API_URL}/api/bank-statements/upload`,
+          {
+            method: 'POST',
+            body: formData,
+          },
+        );
         if (!response.ok) {
           // Handle error
           alert('Upload failed');
