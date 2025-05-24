@@ -21,14 +21,7 @@ const DateRangeSelector: React.FC<DateRangeSelectorProps> = ({
     onChange({ ...value, to: e.target.value });
   };
   return (
-    <div
-      style={{
-        display: 'flex',
-        gap: 12,
-        alignItems: 'center',
-        margin: '16px 0',
-      }}
-    >
+    <>
       <label>
         From:
         <input type="date" value={value.from} onChange={handleFromChange} />
@@ -37,7 +30,7 @@ const DateRangeSelector: React.FC<DateRangeSelectorProps> = ({
         To:
         <input type="date" value={value.to} onChange={handleToChange} />
       </label>
-    </div>
+    </>
   );
 };
 

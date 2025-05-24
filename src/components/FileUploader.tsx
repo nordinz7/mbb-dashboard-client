@@ -37,15 +37,12 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFilesSelected }) => {
   };
 
   return (
-    <div>
-      <input
-        type="file"
-        multiple
-        onChange={handleChange}
-        accept="application/pdf"
-      />
-      <p>Upload PDF files or a folder</p>
-    </div>
+    <input
+      type="file"
+      multiple
+      onChange={handleChange}
+      accept="application/pdf"
+    />
   );
 };
 
