@@ -1,4 +1,5 @@
 import config from './config';
+import { BankStatements, Transactions } from './types';
 
 async function fetchFromApi(
   endpoint: string,
@@ -16,7 +17,7 @@ async function fetchFromApi(
 
 export async function fetchBankStatements(
   params: Record<string, string | number | undefined>,
-) {
+): Promise<BankStatements> {
   return fetchFromApi(
     'bank-statements',
     params,
@@ -26,6 +27,6 @@ export async function fetchBankStatements(
 
 export async function fetchTransactions(
   params: Record<string, string | number | undefined>,
-) {
+): Promise<Transactions> {
   return fetchFromApi('transactions', params, 'Failed to fetch transactions');
 }

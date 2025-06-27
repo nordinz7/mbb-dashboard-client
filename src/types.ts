@@ -14,3 +14,13 @@ export type BankStatement = {
   created_at: string;
   updated_at: string;
 };
+
+export type ListResponse<T> = {
+  rows: T[];
+  total: number;
+  limit: number;
+  offset: number;
+};
+
+export type Transactions = ListResponse<Transaction>;
+export type BankStatements = ListResponse<BankStatement>;
