@@ -10,7 +10,7 @@ export function useTransactions(filters: TransactionQueryParams) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const loadTransactions = async (newFilters) => {
+  const loadTransactions = async (newFilters: TransactionQueryParams) => {
     try {
       setLoading(true);
       setError(null);
@@ -18,7 +18,7 @@ export function useTransactions(filters: TransactionQueryParams) {
       const result = await fetchTransactions({
         limit: 50,
         offset: 0,
-        ...(newFilters || {}),
+        ...newFilters,
       });
       setTransactions(result);
     } catch (err) {
@@ -32,17 +32,9 @@ export function useTransactions(filters: TransactionQueryParams) {
 
   useEffect(() => {
     loadTransactions(filters);
-  }, [
-    filters?.bank_statement_id,
-    filters?.date_from,
-    filters?.date_to,
-    filters?.limit,
-    filters?.offset,
-    filters?.q,
-    filters?.sort,
-  ]);
+  }, [filters]);
 
-  const refetch = async (input?: TransactionQueryParams) =>
+  const refetch = async (input: TransactionQueryParams = {}) =>
     loadTransactions(input);
 
   return {
