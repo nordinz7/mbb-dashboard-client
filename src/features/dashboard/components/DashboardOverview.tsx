@@ -1,7 +1,6 @@
-import React from 'react';
 import { TransactionList } from '../../transactions';
 
-export const DashboardOverview: React.FC = () => {
+export const DashboardOverview = () => {
   return (
     <div className="container mx-auto p-6">
       <div className="mb-8">

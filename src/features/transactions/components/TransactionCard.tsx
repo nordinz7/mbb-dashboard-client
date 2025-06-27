@@ -1,4 +1,3 @@
-import React from 'react';
 import { Transaction } from '../types/transaction.types';
 
 interface TransactionCardProps {
@@ -6,10 +5,10 @@ interface TransactionCardProps {
   onClick?: (transaction: Transaction) => void;
 }
 
-export const TransactionCard: React.FC<TransactionCardProps> = ({
+export const TransactionCard = ({
   transaction,
   onClick,
-}) => {
+}: TransactionCardProps) => {
   const handleClick = () => {
     onClick?.(transaction);
   };

@@ -1,3 +1,5 @@
+import { ListResponse } from '../../../shared';
+
 export type Transaction = {
   id: number;
   date: string;
@@ -6,6 +8,8 @@ export type Transaction = {
   balance: number;
   created_at: string;
 };
+
+export type Transactions = ListResponse<Transaction>;
 
 export type TransactionFilters = {
   startDate?: string;

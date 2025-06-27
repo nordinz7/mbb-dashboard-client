@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
-import {
-  fetchTransactions,
-  Transactions,
-} from '../services/transactions.service';
+import { fetchTransactions } from '../services/transactions.service';
 import {
   TransactionFilters,
+  Transactions,
   TransactionSortOptions,
 } from '../types/transaction.types';
 

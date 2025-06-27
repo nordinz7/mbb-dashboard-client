@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTransactions } from '../hooks/useTransactions';
 import { TransactionCard } from './TransactionCard';
 import { Transaction } from '../types/transaction.types';
@@ -8,10 +7,10 @@ interface TransactionListProps {
   limit?: number;
 }
 
-export const TransactionList: React.FC<TransactionListProps> = ({
+export const TransactionList = ({
   onTransactionClick,
   limit = 50,
-}) => {
+}: TransactionListProps) => {
   const { transactions, loading, error } = useTransactions(
     {},
     undefined,

@@ -1,14 +1,5 @@
 import { fetchFromApi } from '../../../shared/api/client';
-import { ListResponse } from '../../../shared/types';
-import { Transaction } from '../types/transaction.types';
-
-export type Transactions = ListResponse<Transaction>;
-
-export async function fetchTransactions(
-  params: Record<string, string | number | undefined>,
-): Promise<Transactions> {
-  return fetchFromApi('transactions', params, 'Failed to fetch transactions');
-}
+import { Transaction, Transactions } from '../types/transaction.types';
 
 export async function fetchTransactionById(id: number): Promise<Transaction> {
   return fetchFromApi(
@@ -18,13 +9,8 @@ export async function fetchTransactionById(id: number): Promise<Transaction> {
   );
 }
 
-export async function searchTransactions(
-  query: string,
-  params: Record<string, string | number | undefined> = {},
+export async function fetchTransactions(
+  params: Record<string, string | number | undefined>,
 ): Promise<Transactions> {
-  return fetchFromApi(
-    'transactions/search',
-    { ...params, q: query },
-    'Failed to search transactions',
-  );
+  return fetchFromApi('transactions', params, 'Failed to fetch transactions');
 }

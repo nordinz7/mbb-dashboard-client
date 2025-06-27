@@ -1,3 +1,5 @@
+import { ListResponse } from '../../../shared';
+
 export type BankStatement = {
   id: number;
   account_number: string;
@@ -5,6 +7,8 @@ export type BankStatement = {
   created_at: string;
   updated_at: string;
 };
+
+export type BankStatements = ListResponse<BankStatement>;
 
 export type BankStatementFilters = {
   startDate?: string;

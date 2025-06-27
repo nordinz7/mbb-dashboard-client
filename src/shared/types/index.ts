@@ -1,21 +1,19 @@
 // Common API response types
-export type ListResponse<T> = {
-  rows: T[];
-  total: number;
+export type Pagination = {
   limit: number;
   offset: number;
+  total: number;
 };
+
+export type ListResponse<T> = {
+  rows: T[];
+} & Pagination;
 
 // Common utility types
 export type ApiError = {
   message: string;
   code?: string;
   details?: unknown;
-};
-
-export type PaginationParams = {
-  limit?: number;
-  offset?: number;
 };
 
 export type SortParams = {
