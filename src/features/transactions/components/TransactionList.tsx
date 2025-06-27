@@ -1,21 +1,19 @@
 import { useTransactions } from '../hooks/useTransactions';
 import { TransactionCard } from './TransactionCard';
-import { Transaction } from '../types/transaction.types';
+import {
+  Transaction,
+  TransactionQueryParams,
+} from '../types/transaction.types';
 
-interface TransactionListProps {
+type TransactionListProps = {
   onTransactionClick?: (transaction: Transaction) => void;
-  limit?: number;
-}
+} & TransactionQueryParams;
 
 export const TransactionList = ({
   onTransactionClick,
-  limit = 50,
+  ...filters
 }: TransactionListProps) => {
-  const { transactions, loading, error } = useTransactions(
-    {},
-    undefined,
-    limit,
-  );
+  const { transactions, loading, error } = useTransactions(filters);
 
   if (loading) {
     return (

@@ -1,7 +1,13 @@
 import { fetchFromApi } from '../../../shared/api/client';
-import { Transaction, Transactions } from '../types/transaction.types';
+import {
+  Transaction,
+  TransactionQueryParams,
+  Transactions,
+} from '../types/transaction.types';
 
-export async function fetchTransactionById(id: number): Promise<Transaction> {
+export async function fetchTransactionById(
+  id: Transaction['id'],
+): Promise<Transaction> {
   return fetchFromApi(
     `transactions/${id}`,
     {},
@@ -10,7 +16,7 @@ export async function fetchTransactionById(id: number): Promise<Transaction> {
 }
 
 export async function fetchTransactions(
-  params: Record<string, string | number | undefined>,
+  params: TransactionQueryParams,
 ): Promise<Transactions> {
   return fetchFromApi('transactions', params, 'Failed to fetch transactions');
 }

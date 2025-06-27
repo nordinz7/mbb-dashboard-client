@@ -9,6 +9,12 @@ export type ListResponse<T> = {
   rows: T[];
 } & Pagination;
 
+export type SortOption<T extends string> = T | `-${T}`;
+
+export type SearchParamsConvert<T extends Record<string, unknown>> = {
+  [K in keyof T]?: T[K] extends string ? T[K] : string;
+};
+
 // Common utility types
 export type ApiError = {
   message: string;

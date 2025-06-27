@@ -1,4 +1,4 @@
-import { ListResponse } from '../../../shared';
+import { ListResponse, SearchParamsConvert, SortOption } from '../../../shared';
 
 export type Transaction = {
   id: number;
@@ -11,15 +11,20 @@ export type Transaction = {
 
 export type Transactions = ListResponse<Transaction>;
 
-export type TransactionFilters = {
-  startDate?: string;
-  endDate?: string;
-  minAmount?: number;
-  maxAmount?: number;
-  description?: string;
+export type TransactionQueryParams = {
+  limit?: number;
+  offset?: number;
+  bank_statement_id?: number;
+  q?: string;
+  date_from?: string;
+  date_to?: string;
+  sort?: SortOption<keyof Transaction>;
 };
 
-export type TransactionSortOptions = {
-  field: 'date' | 'amount' | 'description';
-  direction: 'asc' | 'desc';
-};
+export type TransactionSearchParams =
+  SearchParamsConvert<TransactionQueryParams>;
+
+export type TransactionParamsInput =
+  | URLSearchParams
+  | string
+  | TransactionSearchParams;
