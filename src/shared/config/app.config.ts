@@ -1,5 +1,5 @@
 // Sample config file that reads from environment variables
-// Usage: import config from './config';
+// Usage: import config from './app.config';
 
 const config = {
   // Example: API endpoint, fallback to a default if not set

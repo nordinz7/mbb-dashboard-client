@@ -1,7 +1,7 @@
-import config from './config';
-import { BankStatements, Transactions } from './types';
+import config from '../config/app.config';
+import { BankStatements, Transactions } from '../types';
 
-async function fetchFromApi(
+export async function fetchFromApi(
   endpoint: string,
   params: Record<string, string | number | undefined>,
   errorMsg: string,
