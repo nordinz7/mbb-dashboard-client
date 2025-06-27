@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { useTransactions } from '../hooks/useTransactions';
 import {
   TransactionQueryParams,
@@ -21,35 +21,47 @@ export const TransactionList = ({
   const [currentSort, setCurrentSort] =
     useState<TransactionQueryParams['sort']>();
 
-  const { transactions, loading, error } = useTransactions({
-    ...filters,
-    sort: currentSort,
-    limit,
-    offset,
-  });
+  // Memoize the combined filters to prevent unnecessary re-renders
+  const combinedFilters = useMemo(
+    () => ({
+      ...filters,
+      sort: currentSort,
+      limit,
+      offset,
+    }),
+    [filters, currentSort, limit, offset],
+  );
 
-  const handleFilter = (newFilters: Partial<TransactionQueryParams>) => {
-    setFilters(newFilters);
-    resetPagination(); // Reset to first page when filters change
-  };
+  const { transactions, loading, error } = useTransactions(combinedFilters);
 
-  const handleSort = (column: keyof Transaction) => {
-    let newSort: TransactionQueryParams['sort'];
+  const handleFilter = useCallback(
+    (newFilters: Partial<TransactionQueryParams>) => {
+      setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
+      resetPagination(); // Reset to first page when filters change
+    },
+    [resetPagination],
+  );
 
-    if (currentSort === column) {
-      // If already sorting by this column ascending, switch to descending
-      newSort = `-${column}` as TransactionQueryParams['sort'];
-    } else if (currentSort === `-${column}`) {
-      // If sorting descending, remove sort
-      newSort = undefined;
-    } else {
-      // Otherwise, sort ascending
-      newSort = column;
-    }
+  const handleSort = useCallback(
+    (column: keyof Transaction) => {
+      let newSort: TransactionQueryParams['sort'];
 
-    setCurrentSort(newSort);
-    resetPagination(); // Reset to first page when sort changes
-  };
+      if (currentSort === column) {
+        // If already sorting by this column ascending, switch to descending
+        newSort = `-${column}` as TransactionQueryParams['sort'];
+      } else if (currentSort === `-${column}`) {
+        // If sorting descending, remove sort
+        newSort = undefined;
+      } else {
+        // Otherwise, sort ascending
+        newSort = column;
+      }
+
+      setCurrentSort(newSort);
+      resetPagination(); // Reset to first page when sort changes
+    },
+    [currentSort, resetPagination],
+  );
 
   if (loading) {
     return (
