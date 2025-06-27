@@ -5,7 +5,7 @@ import {
   Transactions,
 } from '../types/transaction.types';
 
-export function useTransactions(filters?: TransactionQueryParams) {
+export function useTransactions(filters: TransactionQueryParams) {
   const [transactions, setTransactions] = useState<Transactions | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -15,7 +15,11 @@ export function useTransactions(filters?: TransactionQueryParams) {
       setLoading(true);
       setError(null);
 
-      const result = await fetchTransactions(newFilters);
+      const result = await fetchTransactions({
+        limit: 50,
+        offset: 0,
+        ...(newFilters || {}),
+      });
       setTransactions(result);
     } catch (err) {
       setError(
@@ -28,7 +32,15 @@ export function useTransactions(filters?: TransactionQueryParams) {
 
   useEffect(() => {
     loadTransactions(filters);
-  }, [filters]);
+  }, [
+    filters?.bank_statement_id,
+    filters?.date_from,
+    filters?.date_to,
+    filters?.limit,
+    filters?.offset,
+    filters?.q,
+    filters?.sort,
+  ]);
 
   const refetch = async (input?: TransactionQueryParams) =>
     loadTransactions(input);

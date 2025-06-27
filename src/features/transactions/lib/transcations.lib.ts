@@ -1,13 +1,9 @@
-import {
-  TransactionParamsInput,
-  TransactionQueryParams,
-} from '../types/transaction.types';
+import { ParamsInput } from '../../../shared';
+import { convertToQueryParams } from '../../../shared/utils/searchParams.utils';
+import { TransactionQueryParams } from '../types/transaction.types';
 
-export function convertToQueryParams(
-  input: TransactionParamsInput,
-): TransactionQueryParams {
-  const searchParams = convertToSearchParams(input);
-  const queryParams: TransactionQueryParams = {};
+function converter(searchParams: URLSearchParams): TransactionQueryParams {
+  const result: TransactionQueryParams = {};
 
   for (const [key, value] of searchParams.entries()) {
     if (value !== undefined && value !== null) {
@@ -15,39 +11,20 @@ export function convertToQueryParams(
       switch (key) {
         case 'limit':
         case 'offset':
-          queryParams[key] = Number(value);
-          break;
         case 'bank_statement_id':
-          queryParams[key] = Number(value);
+          result[key] = Number(value);
           break;
         default:
-          queryParams[key] = value;
+          result[key] = value;
       }
     }
   }
 
-  return queryParams;
+  return result;
 }
 
-export function convertToSearchParams(
-  input: TransactionParamsInput,
-): URLSearchParams {
-  let searchParams = new URLSearchParams();
-
-  if (input instanceof URLSearchParams) {
-    // If input is already URLSearchParams, just return it
-    return input;
-  } else if (typeof input === 'string') {
-    // If input is a string, parse it as URLSearchParams
-    searchParams = new URLSearchParams(input);
-  } else {
-    // If input is TransactionSearchParams, convert it to URLSearchParams
-    for (const [key, value] of Object.entries(input)) {
-      if (value !== undefined && value !== null) {
-        searchParams.set(key, String(value));
-      }
-    }
-  }
-
-  return searchParams;
+export function getTransactionQueryParams(
+  input: ParamsInput<TransactionQueryParams>,
+) {
+  return convertToQueryParams<TransactionQueryParams>(input, converter);
 }

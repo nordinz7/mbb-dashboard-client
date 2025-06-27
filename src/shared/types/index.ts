@@ -15,14 +15,7 @@ export type SearchParamsConvert<T extends Record<string, unknown>> = {
   [K in keyof T]?: T[K] extends string ? T[K] : string;
 };
 
-// Common utility types
-export type ApiError = {
-  message: string;
-  code?: string;
-  details?: unknown;
-};
-
-export type SortParams = {
-  sortBy?: string;
-  sortDirection?: 'asc' | 'desc';
-};
+export type ParamsInput<T extends Record<string, unknown>> =
+  | URLSearchParams
+  | string
+  | SearchParamsConvert<T>;

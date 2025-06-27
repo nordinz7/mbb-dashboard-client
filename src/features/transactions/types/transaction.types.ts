@@ -23,8 +23,3 @@ export type TransactionQueryParams = {
 
 export type TransactionSearchParams =
   SearchParamsConvert<TransactionQueryParams>;
-
-export type TransactionParamsInput =
-  | URLSearchParams
-  | string
-  | TransactionSearchParams;
