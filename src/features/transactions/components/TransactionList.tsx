@@ -1,19 +1,21 @@
 import { useTransactions } from '../hooks/useTransactions';
-import { TransactionCard } from './TransactionCard';
-import {
-  Transaction,
+import { TransactionQueryParams } from '../types/transaction.types';
+import { TransactionTable } from './TranscationTable';
+import { PaginationComponent, usePagination } from '../../../shared';
+
+type TransactionListProps = {} & Omit<
   TransactionQueryParams,
-} from '../types/transaction.types';
+  'limit' | 'offset'
+>;
 
-type TransactionListProps = {
-  onTransactionClick?: (transaction: Transaction) => void;
-} & TransactionQueryParams;
+export const TransactionList = ({ ...filters }: TransactionListProps) => {
+  const { limit, offset, handlePageChange } = usePagination();
 
-export const TransactionList = ({
-  onTransactionClick,
-  ...filters
-}: TransactionListProps) => {
-  const { transactions, loading, error } = useTransactions(filters);
+  const { transactions, loading, error } = useTransactions({
+    ...filters,
+    limit,
+    offset,
+  });
 
   if (loading) {
     return (
@@ -40,22 +42,20 @@ export const TransactionList = ({
   }
 
   return (
-    <div className="space-y-3">
-      <div className="flex justify-between items-center mb-4">
+    <div className="space-y-4">
+      <div className="flex justify-between items-center">
         <h2 className="text-xl font-semibold">Transactions</h2>
-        <div className="text-sm text-base-content/60">
-          Showing {transactions.rows.length} of {transactions.total}{' '}
-          transactions
-        </div>
       </div>
 
-      {transactions.rows.map((transaction) => (
-        <TransactionCard
-          key={transaction.id}
-          transaction={transaction}
-          onClick={onTransactionClick}
-        />
-      ))}
+      <TransactionTable list={transactions.rows} />
+
+      <PaginationComponent
+        limit={transactions.limit}
+        total={transactions.total}
+        offset={transactions.offset}
+        onPageChange={handlePageChange}
+        disabled={loading}
+      />
     </div>
   );
 };

@@ -12,3 +12,9 @@ export * from './utils';
 
 // Constants exports
 export * from './constants';
+
+// Components exports
+export { Pagination as PaginationComponent } from './components';
+
+// Hooks exports
+export * from './hooks';

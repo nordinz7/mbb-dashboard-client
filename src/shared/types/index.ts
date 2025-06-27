@@ -5,6 +5,11 @@ export type Pagination = {
   total: number;
 };
 
+export type PaginationProps = Pagination & {
+  onPageChange: (newOffset: number) => void;
+  disabled?: boolean;
+};
+
 export type ListResponse<T> = {
   rows: T[];
 } & Pagination;
