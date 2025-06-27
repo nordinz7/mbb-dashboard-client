@@ -47,7 +47,7 @@ export const TransactionList = ({ ...filters }: TransactionListProps) => {
         <h2 className="text-xl font-semibold">Transactions</h2>
       </div>
 
-      <TransactionTable list={transactions.rows} />
+      <TransactionTable list={transactions.rows} offset={offset} />
 
       <PaginationComponent
         limit={transactions.limit}

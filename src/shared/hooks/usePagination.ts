@@ -16,7 +16,7 @@ export interface UsePaginationReturn {
 }
 
 export function usePagination(
-  options: UsePaginationOptions = {}
+  options: UsePaginationOptions = {},
 ): UsePaginationReturn {
   const {
     initialLimit = PAGINATION.DEFAULT_LIMIT,

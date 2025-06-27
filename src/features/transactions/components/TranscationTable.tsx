@@ -1,6 +1,12 @@
 import { Transaction } from '../types/transaction.types';
 
-export function TransactionTable({ list }: { list: Transaction[] }) {
+export function TransactionTable({
+  list,
+  offset = 0,
+}: {
+  list: Transaction[];
+  offset?: number;
+}) {
   return (
     <div className="overflow-x-auto">
       <table className="table table-xs">
@@ -16,7 +22,7 @@ export function TransactionTable({ list }: { list: Transaction[] }) {
         <tbody>
           {list.map((transaction, index) => (
             <tr key={transaction.id}>
-              <th>{index + 1}</th>
+              <th>{offset + index + 1}</th>
               <td>{transaction.date}</td>
               <td>{transaction.amount}</td>
               <td>{transaction.description}</td>
