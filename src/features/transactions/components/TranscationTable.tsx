@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import {
   Transaction,
   TransactionQueryParams,
@@ -18,6 +19,25 @@ export function TransactionTable({
   onFilter?: (filters: Partial<TransactionQueryParams>) => void;
   filters?: Partial<TransactionQueryParams>;
 }) {
+  // Local state for search input to prevent losing focus
+  const [searchValue, setSearchValue] = useState(filters.q || '');
+
+  // Update local search value when filters change externally
+  useEffect(() => {
+    setSearchValue(filters.q || '');
+  }, [filters.q]);
+
+  // Debounced search handler
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (onFilter && searchValue !== filters.q) {
+        onFilter({ ...filters, q: searchValue });
+      }
+    }, 300); // 300ms debounce
+
+    return () => clearTimeout(timeoutId);
+  }, [searchValue, onFilter, filters]);
+
   const getSortIcon = (column: keyof Transaction) => {
     if (currentSort === column) return '↑';
     if (currentSort === `-${column}`) return '↓';
@@ -80,10 +100,9 @@ export function TransactionTable({
                 type="text"
                 placeholder="Search transactions..."
                 className="input input-bordered input-sm"
-                value={filters.q || ''}
+                value={searchValue}
                 onChange={(e) => {
-                  console.log('--------vv', e.target.value);
-                  onFilter({ ...filters, q: e.target.value });
+                  setSearchValue(e.target.value);
                 }}
               />
             </div>
@@ -144,7 +163,10 @@ export function TransactionTable({
           <div className="flex justify-end">
             <button
               className="btn btn-outline btn-sm"
-              onClick={() => onFilter({})}
+              onClick={() => {
+                setSearchValue('');
+                onFilter({});
+              }}
             >
               Clear Filters
             </button>

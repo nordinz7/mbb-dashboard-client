@@ -18,7 +18,7 @@ export const TransactionList = ({
   const { limit, offset, handlePageChange, resetPagination } = usePagination();
 
   // Use the updated hook API
-  const { transactions, loading, error, filters, updateFilters } = 
+  const { transactions, loading, error, filters, updateFilters } =
     useTransactions({
       ...initialFilters,
       limit,
@@ -79,14 +79,6 @@ export const TransactionList = ({
     );
   }
 
-  if (!transactions || transactions.rows.length === 0) {
-    return (
-      <div className="text-center p-8">
-        <p className="text-base-content/60">No transactions found</p>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
@@ -101,7 +93,7 @@ export const TransactionList = ({
       </div>
 
       <TransactionTable
-        list={transactions.rows}
+        list={transactions?.rows || []}
         offset={offset}
         onSort={handleSort}
         currentSort={filters.sort}
@@ -110,9 +102,9 @@ export const TransactionList = ({
       />
 
       <PaginationComponent
-        limit={transactions.limit}
-        total={transactions.total}
-        offset={transactions.offset}
+        limit={transactions?.limit}
+        total={transactions?.total}
+        offset={transactions?.offset}
         onPageChange={handlePageChangeWithFilters}
         disabled={loading}
       />
