@@ -1,5 +1,6 @@
 // Components
 export { BankStatementUpload } from './components/BankStatementUpload';
+export { BankStatementListModal } from './components/BankStatementListModal';
 // export { BankStatementCard } from './components/BankStatementCard';
 // export { BankStatementList } from './components/BankStatementList';
 

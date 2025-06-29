@@ -1,5 +1,27 @@
 import { ParamsInput } from '../types';
 
+function defaultConverter<T extends Record<string, unknown>>(
+  searchParams: URLSearchParams,
+): T {
+  const result: Record<string, unknown> = {};
+
+  for (const [key, value] of searchParams.entries()) {
+    if (value !== undefined && value !== null) {
+      // Convert to appropriate type based on key
+      switch (key) {
+        case 'limit':
+        case 'offset':
+          result[key] = Number(value);
+          break;
+        default:
+          result[key] = value;
+      }
+    }
+  }
+
+  return result as T;
+}
+
 export function convertToSearchParams<T extends Record<string, unknown>>(
   input: ParamsInput<T>,
 ): URLSearchParams {
@@ -26,8 +48,10 @@ export function convertToSearchParams<T extends Record<string, unknown>>(
 
 export function convertToQueryParams<T extends Record<string, unknown>>(
   input: ParamsInput<T>,
-  converter: (value: URLSearchParams) => T,
+  converter?: (value: URLSearchParams) => T,
 ): T {
   const searchParams = convertToSearchParams(input);
-  return converter(searchParams);
+  return converter
+    ? converter(searchParams)
+    : defaultConverter<T>(searchParams);
 }

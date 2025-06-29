@@ -1,6 +1,7 @@
 import { fetchFromApi } from '../../../shared/api/client';
 import {
   BankStatement,
+  BankStatementQueryParams,
   BankStatements,
   BankStatementUploadResponses,
 } from '../types/bank-statement.types';
@@ -17,7 +18,7 @@ export async function fetchBankStatementById(
 }
 
 export async function fetchBankStatements(
-  params: Record<string, string | number | undefined>,
+  params: BankStatementQueryParams,
 ): Promise<BankStatements> {
   return fetchFromApi(
     'bank-statements',
