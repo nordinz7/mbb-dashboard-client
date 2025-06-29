@@ -32,41 +32,39 @@ export function TransactionTable({
   return (
     <div className="space-y-4">
       {/* Current Filters Display */}
-      {Object.keys(filters).length > 0 && (
-        <div className="flex flex-wrap gap-2">
-          <span className="text-sm font-medium text-base-content/70">
-            Active Filters:
+      <div className="flex flex-wrap gap-2">
+        <span className="text-sm font-medium text-base-content/70">
+          Active Filters:
+        </span>
+        {filters.q && (
+          <span className="badge badge-outline badge-sm">
+            Search: &ldquo;{filters.q}&rdquo;
           </span>
-          {filters.q && (
-            <span className="badge badge-outline badge-sm">
-              Search: &ldquo;{filters.q}&rdquo;
-            </span>
-          )}
-          {filters.date_from && (
-            <span className="badge badge-outline badge-sm">
-              From: {filters.date_from}
-            </span>
-          )}
-          {filters.date_to && (
-            <span className="badge badge-outline badge-sm">
-              To: {filters.date_to}
-            </span>
-          )}
-          {filters.bank_statement_id && (
-            <span className="badge badge-outline badge-sm">
-              Statement ID: {filters.bank_statement_id}
-            </span>
-          )}
-          {currentSort && (
-            <span className="badge badge-outline badge-sm">
-              Sort:{' '}
-              {currentSort.startsWith('-')
-                ? `${currentSort.slice(1)} ↓`
-                : `${currentSort} ↑`}
-            </span>
-          )}
-        </div>
-      )}
+        )}
+        {filters.date_from && (
+          <span className="badge badge-outline badge-sm">
+            From: {filters.date_from}
+          </span>
+        )}
+        {filters.date_to && (
+          <span className="badge badge-outline badge-sm">
+            To: {filters.date_to}
+          </span>
+        )}
+        {filters.bank_statement_id && (
+          <span className="badge badge-outline badge-sm">
+            Statement ID: {filters.bank_statement_id}
+          </span>
+        )}
+        {currentSort && (
+          <span className="badge badge-outline badge-sm">
+            Sort:{' '}
+            {currentSort.startsWith('-')
+              ? `${currentSort.slice(1)} ↓`
+              : `${currentSort} ↑`}
+          </span>
+        )}
+      </div>
 
       {/* Filter Controls */}
       {onFilter && (
@@ -83,7 +81,10 @@ export function TransactionTable({
                 placeholder="Search transactions..."
                 className="input input-bordered input-sm"
                 value={filters.q || ''}
-                onChange={(e) => onFilter({ ...filters, q: e.target.value })}
+                onChange={(e) => {
+                  console.log('--------vv', e.target.value);
+                  onFilter({ ...filters, q: e.target.value });
+                }}
               />
             </div>
 

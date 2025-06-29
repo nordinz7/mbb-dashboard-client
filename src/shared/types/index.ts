@@ -23,4 +23,4 @@ export type SearchParamsConvert<T extends Record<string, unknown>> = {
 export type ParamsInput<T extends Record<string, unknown>> =
   | URLSearchParams
   | string
-  | SearchParamsConvert<T>;
+  | T;

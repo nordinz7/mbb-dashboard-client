@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useTransactions } from '../hooks/useTransactions';
 import {
   TransactionQueryParams,
@@ -16,35 +16,27 @@ export const TransactionList = ({
   ...initialFilters
 }: TransactionListProps) => {
   const { limit, offset, handlePageChange, resetPagination } = usePagination();
-  const [filters, setFilters] =
-    useState<Partial<TransactionQueryParams>>(initialFilters);
-  const [currentSort, setCurrentSort] =
-    useState<TransactionQueryParams['sort']>();
 
-  // Memoize the combined filters to prevent unnecessary re-renders
-  const combinedFilters = useMemo(
-    () => ({
-      ...filters,
-      sort: currentSort,
+  // Use the updated hook API
+  const { transactions, loading, error, filters, updateFilters } = 
+    useTransactions({
+      ...initialFilters,
       limit,
       offset,
-    }),
-    [filters, currentSort, limit, offset],
-  );
-
-  const { transactions, loading, error } = useTransactions(combinedFilters);
+    });
 
   const handleFilter = useCallback(
     (newFilters: Partial<TransactionQueryParams>) => {
-      setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
-      resetPagination(); // Reset to first page when filters change
+      updateFilters({ ...newFilters, offset: 0 }); // Reset to first page when filters change
+      resetPagination();
     },
-    [resetPagination],
+    [updateFilters, resetPagination],
   );
 
   const handleSort = useCallback(
     (column: keyof Transaction) => {
       let newSort: TransactionQueryParams['sort'];
+      const currentSort = filters.sort;
 
       if (currentSort === column) {
         // If already sorting by this column ascending, switch to descending
@@ -57,10 +49,18 @@ export const TransactionList = ({
         newSort = column;
       }
 
-      setCurrentSort(newSort);
-      resetPagination(); // Reset to first page when sort changes
+      updateFilters({ sort: newSort, offset: 0 }); // Reset to first page when sort changes
+      resetPagination();
     },
-    [currentSort, resetPagination],
+    [filters.sort, updateFilters, resetPagination],
+  );
+
+  const handlePageChangeWithFilters = useCallback(
+    (newOffset: number) => {
+      updateFilters({ offset: newOffset });
+      handlePageChange(newOffset);
+    },
+    [updateFilters, handlePageChange],
   );
 
   if (loading) {
@@ -104,7 +104,7 @@ export const TransactionList = ({
         list={transactions.rows}
         offset={offset}
         onSort={handleSort}
-        currentSort={currentSort}
+        currentSort={filters.sort}
         onFilter={handleFilter}
         filters={filters}
       />
@@ -113,7 +113,7 @@ export const TransactionList = ({
         limit={transactions.limit}
         total={transactions.total}
         offset={transactions.offset}
-        onPageChange={handlePageChange}
+        onPageChange={handlePageChangeWithFilters}
         disabled={loading}
       />
     </div>
