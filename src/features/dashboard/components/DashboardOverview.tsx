@@ -1,4 +1,5 @@
 import { TransactionList } from '../../transactions';
+import { BankStatementUpload } from '../../bank-statements';
 
 export const DashboardOverview = () => {
   return (
@@ -8,6 +9,14 @@ export const DashboardOverview = () => {
         <p className="text-base-content/60 mt-2">
           Welcome to your financial dashboard
         </p>
+      </div>
+
+      {/* Bank Statement Upload */}
+      <div className="card bg-base-100 shadow-xl mb-6">
+        <div className="card-body">
+          <h2 className="card-title mb-4">Upload Bank Statements</h2>
+          <BankStatementUpload />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
