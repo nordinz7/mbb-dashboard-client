@@ -24,3 +24,5 @@ export type ParamsInput<T extends Record<string, unknown>> =
   | URLSearchParams
   | string
   | T;
+
+export * from './account.types';

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal } from '../../../shared/components/ui';
+import { Modal, AccountSelector } from '../../../shared/components/ui';
 import { useBankStatements } from '../hooks/useBankStatements';
 import { BankStatement } from '../types/bank-statement.types';
 
@@ -103,19 +103,13 @@ export const BankStatementListModal: React.FC<BankStatementListModalProps> = ({
       size="xl"
     >
       <div className="space-y-6">
-        {/* Account Number Input */}
-        <div className="form-control w-full max-w-xs">
-          <label className="label">
-            <span className="label-text">Account Number</span>
-          </label>
-          <input
-            type="text"
-            placeholder="Enter account number"
-            className="input input-bordered w-full max-w-xs"
-            value={selectedAccount}
-            onChange={(e) => setSelectedAccount(e.target.value)}
-          />
-        </div>
+        {/* Account Number Selector */}
+        <AccountSelector
+          value={selectedAccount}
+          onChange={setSelectedAccount}
+          placeholder="Search and select account number"
+          className="max-w-xs"
+        />
 
         {loading && (
           <div className="flex justify-center py-8">
